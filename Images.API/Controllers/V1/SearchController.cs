@@ -32,12 +32,12 @@ namespace Images.API.Controllers.V1
         #region GET
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Image))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(Image))]
-        [HttpGet("{id}")]
-        public async Task<Image> Get(string id)
+        [HttpGet("{searchTerm}")]
+        public async Task<Image> Get(string searchTerm)
         {
-            _logger.LogDebug($"SearchController::Get::{id}");
+            _logger.LogDebug($"SearchController::Get::{searchTerm}");
 
-            var data = await _service.GetAsync(id);
+            var data = await _service.GetAsync(searchTerm);
 
             if (data != null)
                 return _mapper.Map<Image>(data);
