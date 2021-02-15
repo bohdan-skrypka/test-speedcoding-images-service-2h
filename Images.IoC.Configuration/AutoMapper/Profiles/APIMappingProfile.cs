@@ -8,7 +8,7 @@ namespace Images.IoC.Configuration.AutoMapper.Profiles
     {
         public APIMappingProfile()
         {
-            CreateMap<DC.Image, S.Image>();
+            CreateMap<DC.Image, S.Image>().ReverseMap();
         }
     }
 }

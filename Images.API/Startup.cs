@@ -1,4 +1,5 @@
-﻿using Images.API.Common.Attributes;
+﻿using Hangfire;
+using Images.API.Common.Attributes;
 using Images.API.Common.Middlewares;
 using Images.API.Common.Settings;
 using Images.API.Swagger;
@@ -64,6 +65,15 @@ namespace Images.API
 
             try
             {
+                services.AddResponseCompression();
+                services.ConfigureCachingStrategy(Configuration);
+
+                services.RegisterRepository(Configuration);
+                services.RegisterHangfire(Configuration);
+
+                // services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+                // services.RegisterRateLimits(Configuration);
+
                 if (_appSettings.IsValid())
                 {
                     _logger.LogDebug("Startup::ConfigureServices::valid AppSettings");
@@ -190,6 +200,7 @@ namespace Images.API
                     app.UseHsts();
                 }
 
+                app.UseResponseCompression();
                 app.UseHttpsRedirection();
                 app.UseRouting();
                 app.UseAuthorization();
@@ -220,6 +231,8 @@ namespace Images.API
             {
                 _logger.LogError(ex.Message);
             }
+
+            app.UseHangfireDashboard("/jobs");
         }
     }
 }

@@ -7,10 +7,16 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.19" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.19" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Images.API.DataContracts\Images.API.DataContracts.csproj" />
+    <ProjectReference Include="..\Images.Caching.Services\Images.Caching.Services.csproj" />
+    <ProjectReference Include="..\Images.EntityFrameworkContext\Images.EntityFrameworkContext.csproj" />
+    <ProjectReference Include="..\Images.Repository.DataContracts\Images.Repository.DataContracts.csproj" />
+    <ProjectReference Include="..\Images.Repository\Images.Repository.csproj" />
     <ProjectReference Include="..\Images.Services\Images.Services.csproj" />
   </ItemGroup>
 

@@ -4,4 +4,17 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.7.19" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Images.Caching.Configuration\Images.Caching.Configuration.csproj" />
+    <ProjectReference Include="..\Images.Database.Models\Images.Database.Models.csproj" />
+    <ProjectReference Include="..\Images.EntityFrameworkContext\Images.EntityFrameworkContext.csproj" />
+    <ProjectReference Include="..\Images.Repository.DataContracts\Images.Repository.DataContracts.csproj" />
+    <ProjectReference Include="..\Images.Services.DataContracts\Images.Services.DataContracts.csproj" />
+  </ItemGroup>
+
 </Project>
