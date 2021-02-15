@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreRateLimit;
+using AutoMapper;
 using Hangfire;
 using Images.Caching.Configuration;
 using Images.Caching.Services.Distributed;
@@ -9,6 +10,7 @@ using Images.Repository.DataContracts;
 using Images.Services;
 using Images.Services.Contracts;
 using Images.Services.DataContracts.Caching;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +78,37 @@ namespace Images.IoC.Configuration.DI
                         return ServiceProvider.GetService<InMemoryCacheService>();
                 }
             });
+        }
+
+
+        public static void RegisterRateLimits(this IServiceCollection services, IConfiguration configuration)
+        {
+            // needed to load configuration from appsettings.json
+            services.AddOptions();
+
+            // needed to store rate limit counters and ip rules
+            services.AddMemoryCache();
+
+            //load general configuration from appsettings.json
+            services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+
+            //load ip rules from appsettings.json
+            services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+
+            // inject counter and rules stores
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+
+            // Add framework services.
+            services.AddMvc();
+
+            // https://github.com/aspnet/Hosting/issues/793
+            // the IHttpContextAccessor service is not registered by default.
+            // the clientId/clientIp resolvers use it.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // configuration (resolvers, counter key builders)
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
     }
 }

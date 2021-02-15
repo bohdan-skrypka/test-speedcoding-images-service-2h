@@ -1,4 +1,5 @@
-﻿using Hangfire;
+﻿using AspNetCoreRateLimit;
+using Hangfire;
 using Images.API.Common.Attributes;
 using Images.API.Common.Middlewares;
 using Images.API.Common.Settings;
@@ -72,7 +73,7 @@ namespace Images.API
                 services.RegisterHangfire(Configuration);
 
                 // services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-                // services.RegisterRateLimits(Configuration);
+                services.RegisterRateLimits(Configuration);
 
                 if (_appSettings.IsValid())
                 {
@@ -199,6 +200,8 @@ namespace Images.API
 
                     app.UseHsts();
                 }
+
+                app.UseIpRateLimiting();
 
                 app.UseResponseCompression();
                 app.UseHttpsRedirection();
