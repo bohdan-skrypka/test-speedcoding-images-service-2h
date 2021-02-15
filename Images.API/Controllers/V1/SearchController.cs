@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using S = Images.Services.Model;
 
@@ -33,11 +34,11 @@ namespace Images.API.Controllers.V1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Image))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(Image))]
         [HttpGet("{searchTerm}")]
-        public async Task<Image> Get(string searchTerm)
+        public async Task<Image> Get(string searchTerm, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"SearchController::Get::{searchTerm}");
 
-            var data = await _service.GetAsync(searchTerm);
+            var data = await _service.GetAsync(searchTerm, cancellationToken);
 
             if (data != null)
                 return _mapper.Map<Image>(data);

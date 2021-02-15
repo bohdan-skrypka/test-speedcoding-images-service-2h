@@ -19,7 +19,7 @@ namespace Images.Services
             _mapper = mapper;
         }
 
-        public async Task<Image> GetAsync(string id)
+        public async Task<Image> GetAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             return new Image
             {
